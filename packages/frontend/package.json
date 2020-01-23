@@ -1,0 +1,42 @@
+{
+  "name": "@login-with-metamask/frontend",
+  "version": "2.0.0",
+  "author": "Jacek Janczura <janczura.jacek@gmail.com>",
+  "description": "Demo project for 'One-click Login with Blockchain: A MetaMask Tutorial'",
+  "homepage": "http://amaurymartiny.com/login-with-metamask-demo",
+  "license": "MIT",
+  "main": "build",
+  "private": true,
+  "repository": "",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "lint": "prettier \"src/**/*.{ts,tsx}\" --check",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "dependencies": {
+    "@types/bootstrap": "^4.3.1",
+    "@types/dotenv": "^6.1.1",
+    "@types/jwt-decode": "^2.2.1",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.4",
+    "@types/reactstrap": "^8.4.1",
+    "@types/web3": "^1.0.18",
+    "bootstrap": "^4.4.1",
+    "downloadjs": "^1.4.7",
+    "jwt-decode": "^2.2.0",
+    "react": "^16.8.6",
+    "react-blockies": "^1.4.1",
+    "react-dom": "^16.8.6",
+    "react-scripts": "2.1.8",
+    "reactstrap": "^8.4.0",
+    "typescript": "^3.7.5",
+    "web3": "^1.0.0-beta.52"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

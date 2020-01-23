@@ -1,0 +1,7 @@
+MySecretPassword
+
+#Encrypt
+openssl aes-256-cbc -a -salt -in Hamlet.txt -out Hamlet.txt.enc
+
+#Decrypt
+openssl aes-256-cbc -d -a -salt -in Hamlet.txt.enc -out Hamlet2.txt
