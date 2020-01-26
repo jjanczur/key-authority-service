@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Login } from '../Login';
-import logo from './deliverer_logo2.png';
+import logo from './key_authority_logo.png';
 import { Profile } from '../Profile/Profile';
 import { Auth } from '../types';
 import './App.css';
@@ -41,7 +41,7 @@ export class App extends React.Component<{}, State> {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to books delivery service</h1>
+          {/* <h1 className="App-title">Welcome to books delivery service</h1> */}
         </header>
         <div className="App-intro">
           {auth ? (

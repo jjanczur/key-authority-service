@@ -3,13 +3,13 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  /* animation: App-logo-spin infinite 20s linear; */
   height: 200px;
 }
 
 .App-header {
-  background-color: #e8c0e2;
-  height: 200px;
+  background-color: #fff300;
+  height: 250px;
   padding: 20px;
   color: black;
 }
@@ -26,8 +26,8 @@
 
 .btn-primary {
   color: rgb(0, 0, 0);
-  background-color: #e8c0e2;
-  border-color: #e8c0e2;
+  background-color: #fff300;
+  border-color: #fff300;
 }
 
 @keyframes App-logo-spin {

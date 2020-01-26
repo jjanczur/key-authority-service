@@ -4,8 +4,12 @@ import { Table } from 'reactstrap';
 import { Button } from 'reactstrap';
 let download = require('downloadjs');
 
-import Web3 from 'web3';
+// import Web3 from 'web3';
 import getWeb3 from './getWeb3';
+
+import * as DappToken from "./contracts/DappToken.json";
+import * as DigitalContentContract from "./contracts/DigitalContentContract.json";
+import * as ContentContractFactory from "./contracts/ContentContractFactory.json";
 
 // import hamlet from '../data/Hamlet.txt';
 // import romeo from '../data/Romeo-and-Juliet.txt';
@@ -30,6 +34,9 @@ interface State {
   };
   username: string;
   availableContent?: any[];
+  _hamletToken?: any;
+  _romeoToken?: any;
+  web3?: any;
 }
 
 export class Profile extends React.Component<Props, State> {
@@ -40,7 +47,7 @@ export class Profile extends React.Component<Props, State> {
     availableContent: []
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       auth: { accessToken }
     } = this.props;
@@ -56,7 +63,23 @@ export class Profile extends React.Component<Props, State> {
       .then(response => response.json())
       .then(user => this.setState({ user }))
       .catch(window.alert);
-    this.displayContent();
+
+    const web3 = await getWeb3();
+    if(web3 === undefined){
+      throw new Error("No metamask client. Please setup metamask first.")
+    }
+
+    const _romeoToken = new web3.eth.Contract(
+      DappToken.abi,
+      process.env.REACT_APP_ROMEO_TOKEN
+    );
+
+    this.setState({ _romeoToken, web3 });
+
+
+    // Use web3 to get the user's accounts.
+    // const accounts = await web3.eth.getAccounts();
+    await this.displayContent();
   }
 
   handleChange = ({
@@ -65,27 +88,54 @@ export class Profile extends React.Component<Props, State> {
     this.setState({ username: value });
   };
 
-  displayContent = () => {
+   displayContent = async () => {
+    const { web3, _romeoToken} = this.state;
+    const _hamletToken = new web3.eth.Contract(
+      DappToken.abi,
+      process.env.REACT_APP_HAMLET_TOKEN
+    );
+
+    this.setState({ _hamletToken });
+
+     const coinbase = await web3.eth.getCoinbase();
+
+     if (!coinbase) {
+       window.alert("Please activate MetaMask first.");
+     }
+
+     const publicAddress = coinbase.toLowerCase();
+
+    const hamletName = await _hamletToken.methods.name().call();
+    const hamletOwned = await _hamletToken.methods
+      .balanceOf(publicAddress)
+      .call();
+
+    const romeoName = await _romeoToken.methods.name().call();
+    const romeoOwned = await _romeoToken.methods
+      .balanceOf(publicAddress)
+      .call();
+
+
     let files: any[];
-    let romeo: [string, number];
-    let hamlet: [string, number];
-    romeo = ['romeoName', 4];
-    hamlet = ['hamletName', 2];
+    let romeo: [string, number, string];
+    let hamlet: [string, number, string];
+     romeo = [romeoName, Number(romeoOwned), "romeo"];
+     hamlet = [hamletName, Number(hamletOwned), "hamlet"];
     // <Button color="primary"> Get a Book </Button>;
     files = [];
-    files.push(romeo);
-    files.push(hamlet);
+    Number(hamletOwned) === 0 ? null : files.push(hamlet);
+    Number(romeoOwned) === 0 ? null : files.push(romeo);
 
     this.setState({ availableContent: files });
   };
 
-  async handleGet() {
+  async handleGet(name: string) {
     const {
       auth: { accessToken }
     } = this.props;
-    console.log(accessToken);
     const { user, username } = this.state;
 
+    console.log(name)
     if (!user) {
       window.alert(
         'The user id has not been fetched yet. Please try again in 5 seconds.'
@@ -95,7 +145,8 @@ export class Profile extends React.Component<Props, State> {
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/download`, {
       headers: {
-        'Content-Type': 'text/example'
+        'Content-Type': 'text/example',
+        'name': name
       },
       method: 'GET'
     })
@@ -103,25 +154,9 @@ export class Profile extends React.Component<Props, State> {
         return resp.blob();
       })
       .then(function(blob) {
-        download(blob);
+        name === "romeo" ? download(blob, "Romeo-and-Juliet_decryption_key.txt", "text/txt") : download(blob, "Hamlet_decryption_key.txt", "text/txt");
       });
 
-    // .then(response => response.blob())
-    // .then(res => {
-    //   //Create a Blob from the Stream
-    //   // console.log(res);
-    //   const file = new Blob([res], {
-    //     type: 'text/example'
-    //   });
-    //   //Build a URL from the file
-    //   const fileURL = URL.createObjectURL(file);
-    //   //Open the URL on new Window
-    //   window.open(fileURL);
-    // })
-    // .catch(err => {
-    //   window.alert(err);
-    //   this.setState({ loading: false });
-    // });
   }
 
   handleSubmit = () => {
@@ -187,8 +222,8 @@ export class Profile extends React.Component<Props, State> {
           <Table>
             <thead>
               <tr>
-                <th className="text-middle">Available books</th>
-                <th className="text-middle">Get a Book</th>
+                <th className="text-middle">Available keys</th>
+                <th className="text-middle">Get a Key</th>
                 <th className="text-middle">Number of owned pieces</th>
               </tr>
             </thead>
@@ -202,10 +237,10 @@ export class Profile extends React.Component<Props, State> {
                           <Button
                             color="primary"
                             onClick={async () => {
-                              await this.handleGet();
+                              await this.handleGet(item[2]);
                             }}
                           >
-                            Get a Book
+                            Get a Key
                           </Button>
                         }
                       </th>

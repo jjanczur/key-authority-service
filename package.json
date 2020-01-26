@@ -5,7 +5,7 @@
   "description": "Demo project for 'One-click Login with Blockchain: A MetaMask Tutorial'",
   "license": "MIT",
   "private": true,
-  "repository": "",
+  "repository": "https://github.com/jjanczur/deliverer-service",
   "workspaces": {
     "packages": [
       "packages/*"

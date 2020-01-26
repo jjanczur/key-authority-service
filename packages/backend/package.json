@@ -2,11 +2,11 @@
   "name": "@login-with-metamask/backend",
   "version": "2.0.0",
   "author": "Jacek Janczura <janczura.jacek@gmail.com>",
-  "description": "Demo project for 'One-click Login with Blockchain: A MetaMask Tutorial'",
+  "description": "Demo project for deliverer service",
   "license": "MIT",
   "main": "lib",
   "private": true,
-  "repository": "",
+  "repository": "https://github.com/jjanczur/deliverer-service",
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'yarn start'",
