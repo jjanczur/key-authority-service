@@ -1,11 +1,14 @@
-# Login with MetaMask
+# Key Authority Service
 
-This repo was build based on [Amaury Martuny's tutorial](https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial) on how to perform signature-based authentication.
+This service is part of my master thesis on the decentralization of trust in digital content distribution using blockchain.
 
-<!-- [![Build Status](https://travis-ci.org/amaurymartiny/login-with-metamask-demo.svg?branch=master)](https://travis-ci.org/amaurymartiny/login-with-metamask-demo)
-[![David (backend)](<https://img.shields.io/david/amaurymartiny/login-with-metamask-demo.svg?label=deps%20(backend)&path=packages/backend>)](https://david-dm.org/amaurymartiny/login-with-metamask-demo?path=packages/backend)
-[![David (frontend)](<https://img.shields.io/david/amaurymartiny/login-with-metamask-demo.svg?label=deps%20(frontend)&path=packages/frontend>)](https://david-dm.org/amaurymartiny/login-with-metamask-demo?path=packages/frontend)
-[![](https://img.shields.io/badge/Buy%20me%20a%20tree-%F0%9F%8C%B3-lightgreen)](https://offset.earth/amaurymartiny) -->
+ The buyer is redirected to the delivery services from the merchant service. After being redirected, the ownership of the blockchain wallet needs to be verified.
+
+The delivery service is composed of the back end, which stores the data and verifies the user, and the front end, which allows users to interact with the system. The service is implemented in TypeScript, React.ts components as a front end client and Express.ts, Web3.ts as a back end server. The front end communicates with the back end via REST API. 
+
+The service requests the user to prove that they own a private key to the blockchain wallet by signing the random string. The front end sends back the signature to the back end, which verifies it. If the authentication was successful, the back end generates the JWT session token, which will be used for the authenticated calls to the back end, and the secured session is established.
+
+In order to allow verified buyers accessing the content, the backend checks if the verified wallet owns a digital ERC20 token - access rights to the content after the positive verification buyer is allowed to accessing the content.
 
 
 ## Live Demo
@@ -72,3 +75,7 @@ yarn start
 ## Tests
 
 Since this project is a demo, I haven't written any tests for it. Only code linting is performed, via prettier, which you can run using `yarn lint`.
+
+## Thanks Amaury Martuny!
+
+This repo was build based on [Amaury Martuny's tutorial](https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial) on how to perform signature-based authentication.
